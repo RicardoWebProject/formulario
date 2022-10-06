@@ -1,3 +1,5 @@
+@extends('componenteMarca.layout')
+@section('content')
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -65,42 +67,68 @@
             }
         </style>
     </head>
-    <body>
-    <form action="insertar.php" class="form-register" method="post">
+<body>
+
+
+  
+<div class="row">
+    <div class="col-lg-12 margin-tb">
+        <div class="pull-left">
+            <h2>Agregar nuevo Componente</h2>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-primary" href="{{ route('formulario.index') }}"> Atrás</a>
+        </div>
+    </div>
+</div>
+   
+@if ($errors->any())
+    <div class="alert alert-danger">
+        There were some problems with your input.<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+    <form action="{{ route('formulario.store') }}" class="form-register" method="POST">
+    @csrf
         <h1 class="form__title">REGISTRO DE COMPONENTES</h1>
         <div class="mb-3">
             <label for="" class="from__label">Seleccione componente:</label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-            <option selected>Seleccionar</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="componente_id">
+            @foreach($componentes as $componente)
+                <option value="{{$componente->id}}" type="number"> {{ $componente->nombre }} </option>
+            @endforeach
         </select>
         </div>
 
         <div class="mb-3">
             <label for="" class="from__label">Seleccione marca:</label>
-        <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-            <option selected>Seleccionar</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+        <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="marcha_id">
+            @foreach($marcas as $marca)
+                <option value="{{$marca->id}}" type="number"> {{ $marca->nombre }} </option>
+            @endforeach
         </select>
         </div>
 
         <div class="mb-3">
             <label for="" class="from__label">Ingrese cantidad:</label>
-            <input type="text" class="form__input">
+            <input type="number" class="form__input" name="cantidad">
         </div>
 
         <div class="input-group">
             <span class="input-group-text">Comentario</span>
-            <textarea class="form-control" aria-label="With textarea"></textarea>
+            <textarea class="form-control" aria-label="With textarea" name="comentario"></textarea>
         </div>
         <br>
         <div class="d-grid gap-2">
-            <input type="submit" class="btn btn-danger">
+            <button type="submit" class="btn btn-info">Submit</button>
         </div>
     </form>
     </body>
 </html>
+@endsection
